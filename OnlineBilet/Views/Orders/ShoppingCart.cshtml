@@ -1,0 +1,74 @@
+﻿﻿@using OnlineBilet.Data.ViewModels;
+@model ShoppingCartVM
+
+@{
+    ViewData["Title"] = "Alışveriş Sepeti";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h2>Alışveriş Sepeti</h2>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Seçilen Adet</th>
+                    <th>Film</th>
+                    <th>Ücret</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                {
+                    <tr>
+                        <td class="align-middle">@item.Amount</td>
+                        <td class="align-middle">@item.Movie.MovieName</td>
+                        <td class="align-middle">@item.Movie.Price.ToString("c")</td>
+                        <td class="align-middle">@((item.Amount * item.Movie.Price).ToString("c"))</td>
+                        <td class="align-middle">
+                            <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
+                               asp-route-id="@item.Movie.Id">
+                                <i class="bi bi-cart-dash"></i>
+                            </a>
+                            |
+                            <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart"
+                               asp-route-id="@item.Movie.Id">
+                                <i class="bi bi-cart-plus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Toplam:</b></td>
+                    <td>
+                        @Model.ShoppingCartTotal.ToString("c")
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
+                Siparişi Tamamla
+                </a>
+                <div id="paypal-btn"></div>
+                <span style="padding:5px"></span>
+                <a class="btn btn-outline-success" asp-controller="Movies" asp-action="Index">
+                    Alışverişe Devam Et
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
